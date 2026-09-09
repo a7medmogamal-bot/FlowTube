@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowTube - Download. Simple.</title>
+    <meta name="description" content="FlowTube - Premium content downloader 2027">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a24;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-glass: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-tertiary: #606070;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+            --accent-light: rgba(99, 102, 241, 0.15);
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --plus-color: #f59e0b;
+            --plus-light: rgba(245, 158, 11, 0.15);
+            --glass-blur: blur(20px);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-family: 'Inter', 'Segoe UI', 'Noto Sans Arabic', sans-serif;
+            --max-width: 1200px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f0f0f2;
+            --bg-tertiary: #e5e5e8;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --bg-glass: rgba(255, 255, 255, 0.8);
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a5e;
+            --text-tertiary: #8a8a9e;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-glass: rgba(0, 0, 0, 0.1);
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --accent-light: rgba(99, 102, 241, 0.1);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition);
+            overflow-x: hidden;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(5%, 5%); }
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-glass);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            padding: 4px;
+        }
+
+        .lang-btn {
+            padding: 6px 14px;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all var(--transition);
+            font-family: var(--font-family);
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            padding: 10px 16px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        main {
+            flex: 1;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 60px 24px;
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--accent-light);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .url-form {
+            display: flex;
+            gap: 12px;
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 8px;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            transition: all var(--transition);
+        }
+
+        .url-form:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+        }
+
+        .url-form input {
+            flex: 1;
+            padding: 16px 20px;
+            font-size: 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            outline: none;
+            font-family: var(--font-family);
+            direction: ltr;
+            text-align: center;
+        }
+
+        .url-form input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 24px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-family);
+            white-space: nowrap;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-plus {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-plus:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-glass);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast {
+            padding: 14px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.9rem;
+            animation: slideUpToast 0.3s ease;
+            pointer-events: auto;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+        }
+
+        .toast-success {
+            background: rgba(16, 185, 129, 0.9);
+            color: #fff;
+        }
+
+        .toast-error {
+            background: rgba(239, 68, 68, 0.9);
+            color: #fff;
+        }
+
+        @keyframes slideUpToast {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .video-preview {
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .preview-card {
+            display: flex;
+            gap: 24px;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            flex-wrap: wrap;
+        }
+
+        .preview-thumbnail {
+            width: 280px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+        }
+
+        .preview-details {
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .preview-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .preview-meta {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .quality-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .quality-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: 2px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-family);
+        }
+
+        .quality-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .quality-btn.selected {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .quality-btn.plus-quality {
+            border-color: var(--plus-color);
+            background: var(--plus-light);
+        }
+
+        .plus-badge {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 800;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.1rem;
+        }
+
+        .progress-section {
+            margin-top: 24px;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+
+        .progress-ring {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+        }
+
+        .progress-ring-circle {
+            fill: none;
+            stroke: var(--bg-tertiary);
+            stroke-width: 6;
+        }
+
+        .progress-ring-fill {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 6;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .progress-status {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .progress-percent {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            animation: slideUpModal 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUpModal {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-content h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .payment-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px;
+            border: 2px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-family);
+            color: var(--text-primary);
+        }
+
+        .payment-method:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .payment-method.selected {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .vodafone { background: #e60000; color: #fff; }
+        .orange { background: #ff7900; color: #fff; }
+        .etisalat { background: #4caf50; color: #fff; }
+        .we { background: #6a1b9a; color: #fff; }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            padding: 14px 16px;
+            border: 2px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: all var(--transition);
+            font-family: var(--font-family);
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            text-align: center;
+            transition: all var(--transition);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--plus-color);
+            box-shadow: 0 0 0 2px var(--plus-color), var(--shadow-md);
+        }
+
+        .pricing-plan {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 24px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 24px;
+            text-align: right;
+        }
+
+        .pricing-features li {
+            padding: 8px 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .check-icon {
+            color: var(--success);
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+        }
+
+        .history-thumbnail {
+            width: 80px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+        }
+
+        .history-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .history-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .url-form { flex-direction: column; }
+            .payment-methods { grid-template-columns: 1fr; }
+            .preview-card { flex-direction: column; }
+            .preview-thumbnail { width: 100%; height: auto; }
+            .menu-toggle { display: block; }
+            .nav-links { display: none; }
+            .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 72px; right: 0; left: 0; background: var(--bg-secondary); padding: 16px; border-bottom: 1px solid var(--border-glass); }
+            .lang-switcher { order: 2; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: 2rem; }
+            main { padding: 24px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    
+    <header class="site-header">
+        <nav class="nav-container">
+            <a href="#" class="logo" id="logoBtn">
+                <div class="logo-icon">F</div>
+                <span class="logo-text">FlowTube</span>
+            </a>
+            
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="ar">عربي</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+            
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" class="active" data-page="home" data-i18n="nav_home">الرئيسية</a></li>
+                <li><a href="#" data-page="pricing" data-i18n="nav_pricing">الباقات</a></li>
+                <li><a href="#" data-page="history" data-i18n="nav_history">السجل</a></li>
+                <li><a href="#" data-page="about" data-i18n="nav_about">من نحن</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="mainContent">
+        <section class="hero" id="homePage">
+            <div class="hero-badge"><span class="dot"></span> <span data-i18n="online_status">الخوادم تعمل</span></div>
+            <h1 class="hero-title">FlowTube</h1>
+            <p class="hero-subtitle" data-i18n="tagline">حمل ببساطة.</p>
+            
+            <form class="url-form" id="urlForm">
+                <input type="url" id="videoUrl" placeholder="الصق رابط الفيديو هنا..." required>
+                <button type="submit" class="btn btn-primary" data-i18n="get_video">جلب الفيديو</button>
+            </form>
+            
+            <div id="toastContainer" class="toast-container"></div>
+        </section>
+
+        <section class="video-preview" id="videoPreview" style="display:none;">
+            <article class="preview-card">
+                <img class="preview-thumbnail" id="previewThumbnail" src="" alt="Video thumbnail">
+                <div class="preview-details">
+                    <h2 class="preview-title" id="previewTitle"></h2>
+                    <p class="preview-meta"><span id="previewDuration"></span> · <span id="previewSource"></span></p>
+                    <p style="font-weight:600; margin-bottom:10px;" data-i18n="select_quality">اختر الجودة:</p>
+                    <div class="quality-selector" id="qualitySelector"></div>
+                    <button class="btn btn-primary download-btn" id="downloadBtn" data-i18n="download_now">تحميل الآن</button>
+                </div>
+            </article>
+        </section>
+
+        <section class="progress-section" id="progressSection" style="display:none;">
+            <div class="progress-ring">
+                <svg width="80" height="80" viewBox="0 0 80 80">
+                    <circle class="progress-ring-circle" cx="40" cy="40" r="34"/>
+                    <circle class="progress-ring-fill" id="progressRingFill" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+                </svg>
+            </div>
+            <div class="progress-status" id="progressStatus">Processing...</div>
+            <div class="progress-percent" id="progressPercent">0%</div>
+        </section>
+
+        <section id="pricingPage" style="display:none;">
+            <h1 style="text-align:center; font-size:2.5rem; margin-bottom:40px;" data-i18n="pricing_title">الباقات</h1>
+            <div class="pricing-grid">
+                <article class="pricing-card">
+                    <h2 class="pricing-plan">Free</h2>
+                    <p class="pricing-price" style="color:var(--accent);">0 ج.م</p>
+                    <ul class="pricing-features">
+                        <li><span class="check-icon">✓</span> 360p</li>
+                        <li><span class="check-icon">✓</span> 480p</li>
+                        <li><span class="check-icon">✓</span> <span data-i18n="history">السجل</span></li>
+                        <li><span class="check-icon">✓</span> <span data-i18n="themes">المظهر</span></li>
+                    </ul>
+                    <button class="btn btn-secondary" disabled data-i18n="current_plan">خطتك الحالية</button>
+                </article>
+                <article class="pricing-card featured">
+                    <h2 class="pricing-plan" style="color:var(--plus-color);">PLUS</h2>
+                    <p class="pricing-price" style="color:var(--plus-color);">49 ج.م/شهر</p>
+                    <ul class="pricing-features">
+                        <li><span class="check-icon">✓</span> 720p</li>
+                        <li><span class="check-icon">✓</span> 1080p</li>
+                        <li><span class="check-icon">✓</span> <span data-i18n="priority">أولوية أعلى</span></li>
+                        <li><span class="check-icon">✓</span> <span data-i18n="all_free">كل مميزات المجاني</span></li>
+                    </ul>
+                    <button class="btn btn-plus" id="upgradeBtn" data-i18n="upgrade">الترقية إلى Plus</button>
+                </article>
+            </div>
+        </section>
+
+        <section id="historyPage" style="display:none;">
+            <h1 style="text-align:center; font-size:2.5rem; margin-bottom:40px;" data-i18n="history_title">سجل التحميلات</h1>
+            <div style="text-align:center; margin-bottom:24px;">
+                <button class="btn btn-secondary" id="clearHistoryBtn" data-i18n="clear_history">مسح السجل</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+        </section>
+
+        <section id="aboutPage" style="display:none;">
+            <h1 style="text-align:center; font-size:2.5rem; margin-bottom:40px;" data-i18n="about_title">من نحن</h1>
+            <div style="max-width:600px; margin:0 auto; text-align:center;">
+                <p style="color:var(--text-secondary); font-size:1.1rem; margin-bottom:16px;" data-i18n="about_text">FlowTube هي أداة بسيطة تساعدك على تحميل المحتوى الذي تملك حق تحميله.</p>
+                <p style="font-size:1.2rem; font-weight:700; color:var(--accent);">© 2027 FlowTube</p>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal" id="plusModal" style="display:none;">
+        <div class="modal-content">
+            <h2 data-i18n="plus_required">ميزة Plus</h2>
+            <p id="plusModalMessage" data-i18n="plus_message">هذه الجودة متاحة فقط لمشتركي Plus.</p>
+            <div class="modal-actions">
+                <button class="btn btn-plus" id="modalUpgradeBtn" data-i18n="upgrade">الترقية</button>
+                <button class="btn btn-secondary" id="closeModalBtn" data-i18n="cancel">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="paymentModal" style="display:none;">
+        <div class="modal-content">
+            <h2 data-i18n="upgrade_plus">الترقية إلى Plus</h2>
+            <p data-i18n="payment_method">اختر طريقة الدفع</p>
+            <div class="payment-methods" id="paymentMethods">
+                <button type="button" class="payment-method selected" data-method="vodafone">
+                    <div class="payment-icon vodafone">V</div>
+                    <span>فودافون كاش</span>
+                </button>
+                <button type="button" class="payment-method" data-method="orange">
+                    <div class="payment-icon orange">O</div>
+                    <span>أورانج كاش</span>
+                </button>
+                <button type="button" class="payment-method" data-method="etisalat">
+                    <div class="payment-icon etisalat">E</div>
+                    <span>اتصالات كاش</span>
+                </button>
+                <button type="button" class="payment-method" data-method="we">
+                    <div class="payment-icon we">W</div>
+                    <span>وي كاش</span>
+                </button>
+            </div>
+            <div class="form-group">
+                <label data-i18n="wallet_number">رقم المحفظة</label>
+                <input type="tel" id="phoneNumber" placeholder="01xxxxxxxxx" required>
+            </div>
+            <div class="form-group">
+                <label data-i18n="full_name">الاسم بالكامل</label>
+                <input type="text" id="fullName" placeholder="أدخل اسمك" required>
+            </div>
+            <button class="btn btn-plus" style="width:100%;" id="confirmPaymentBtn" data-i18n="confirm_payment">تأكيد الدفع</button>
+        </div>
+    </div>
+
+    <div class="modal" id="maintenanceModal" style="display:none;">
+        <div class="modal-content">
+            <h2 style="color:var(--warning);" data-i18n="maintenance">تحت الصيانة</h2>
+            <p data-i18n="maintenance_msg">نظام الدفع تحت الصيانة حالياً. سنقوم بإبلاغك في أقرب وقت.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeMaintenanceBtn" data-i18n="ok">حسناً</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ============ i18n Translations ============
+            const translations = {
+                ar: {
+                    nav_home: 'الرئيسية',
+                    nav_pricing: 'الباقات',
+                    nav_history: 'السجل',
+                    nav_about: 'من نحن',
+                    online_status: 'الخوادم تعمل',
+                    tagline: 'حمل ببساطة.',
+                    get_video: 'جلب الفيديو',
+                    select_quality: 'اختر الجودة:',
+                    download_now: 'تحميل الآن',
+                    pricing_title: 'الباقات',
+                    history_title: 'سجل التحميلات',
+                    about_title: 'من نحن',
+                    about_text: 'FlowTube هي أداة بسيطة تساعدك على تحميل المحتوى الذي تملك حق تحميله.',
+                    plus_required: 'ميزة Plus',
+                    plus_message: 'هذه الجودة متاحة فقط لمشتركي Plus.',
+                    upgrade: 'الترقية إلى Plus',
+                    cancel: 'إلغاء',
+                    upgrade_plus: 'الترقية إلى Plus',
+                    payment_method: 'اختر طريقة الدفع',
+                    wallet_number: 'رقم المحفظة',
+                    full_name: 'الاسم بالكامل',
+                    confirm_payment: 'تأكيد الدفع',
+                    maintenance: 'تحت الصيانة',
+                    maintenance_msg: 'نظام الدفع تحت الصيانة حالياً. سنقوم بإبلاغك في أقرب وقت.',
+                    ok: 'حسناً',
+                    history: 'السجل',
+                    themes: 'المظهر',
+                    current_plan: 'خطتك الحالية',
+                    priority: 'أولوية أعلى',
+                    all_free: 'كل مميزات المجاني',
+                    clear_history: 'مسح السجل',
+                    no_history: 'لا توجد تحميلات بعد',
+                    invalid_url: 'الرجاء إدخال رابط صحيح.',
+                    server_error: 'لا يمكن الاتصال بالخادم.',
+                    processing: 'جاري المعالجة...',
+                    completed: 'اكتمل التحميل!',
+                    failed: 'فشل التحميل.'
+                },
+                en: {
+                    nav_home: 'Home',
+                    nav_pricing: 'Pricing',
+                    nav_history: 'History',
+                    nav_about: 'About',
+                    online_status: 'Servers Online',
+                    tagline: 'Download. Simple.',
+                    get_video: 'Get Video',
+                    select_quality: 'Select Quality:',
+                    download_now: 'Download Now',
+                    pricing_title: 'Pricing',
+                    history_title: 'Download History',
+                    about_title: 'About Us',
+                    about_text: 'FlowTube is a simple tool to download content you have permission to use.',
+                    plus_required: 'Plus Feature',
+                    plus_message: 'This quality is only available for Plus subscribers.',
+                    upgrade: 'Upgrade to Plus',
+                    cancel: 'Cancel',
+                    upgrade_plus: 'Upgrade to Plus',
+                    payment_method: 'Select Payment Method',
+                    wallet_number: 'Wallet Number',
+                    full_name: 'Full Name',
+                    confirm_payment: 'Confirm Payment',
+                    maintenance: 'Under Maintenance',
+                    maintenance_msg: 'Payment system is under maintenance. We will notify you soon.',
+                    ok: 'OK',
+                    history: 'History',
+                    themes: 'Themes',
+                    current_plan: 'Current Plan',
+                    priority: 'Higher Priority',
+                    all_free: 'All Free Features',
+                    clear_history: 'Clear History',
+                    no_history: 'No downloads yet',
+                    invalid_url: 'Please enter a valid URL.',
+                    server_error: 'Cannot connect to server.',
+                    processing: 'Processing...',
+                    completed: 'Download completed!',
+                    failed: 'Download failed.'
+                }
+            };
+
+            // ============ State ============
+            let currentLang = 'ar';
+            let currentVideoInfo = null;
+            let selectedQuality = null;
+            let currentJobId = null;
+            let progressInterval = null;
+            let selectedPaymentMethod = 'vodafone';
+
+            const API_BASE_URL = '/api';
+
+            // ============ DOM Elements ============
+            const langBtns = document.querySelectorAll('.lang-btn');
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            const urlForm = document.getElementById('urlForm');
+            const videoUrlInput = document.getElementById('videoUrl');
+            const videoPreview = document.getElementById('videoPreview');
+            const previewThumbnail = document.getElementById('previewThumbnail');
+            const previewTitle = document.getElementById('previewTitle');
+            const previewDuration = document.getElementById('previewDuration');
+            const previewSource = document.getElementById('previewSource');
+            const qualitySelector = document.getElementById('qualitySelector');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const progressSection = document.getElementById('progressSection');
+            const progressStatus = document.getElementById('progressStatus');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressRingFill = document.getElementById('progressRingFill');
+            const plusModal = document.getElementById('plusModal');
+            const plusModalMessage = document.getElementById('plusModalMessage');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modalUpgradeBtn = document.getElementById('modalUpgradeBtn');
+            const paymentModal = document.getElementById('paymentModal');
+            const paymentMethods = document.getElementById('paymentMethods');
+            const maintenanceModal = document.getElementById('maintenanceModal');
+            const closeMaintenanceBtn = document.getElementById('closeMaintenanceBtn');
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+            const toastContainer = document.getElementById('toastContainer');
+            const historyList = document.getElementById('historyList');
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+            // ============ Language ============
+            function setLanguage(lang) {
+                currentLang = lang;
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                
+                langBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+                
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.dataset.i18n;
+                    if (translations[lang] && translations[lang][key]) {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+                
+                localStorage.setItem('flowtube_lang', lang);
+            }
+
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+            });
+
+            // ============ Navigation ============
+            const pages = ['homePage', 'pricingPage', 'historyPage', 'aboutPage'];
+            
+            function showPage(pageId) {
+                pages.forEach(id => {
+                    document.getElementById(id).style.display = id === pageId ? 'block' : 'none';
+                });
+                
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.classList.toggle('active', link.dataset.page === pageId.replace('Page', ''));
+                });
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            document.querySelectorAll('.nav-links a[data-page]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showPage(link.dataset.page + 'Page');
+                    navLinks.classList.remove('open');
+                });
+            });
+
+            document.getElementById('logoBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage('homePage');
+            });
+
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+            });
+
+            // ============ Toast ============
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.textContent = message;
+                toastContainer.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            }
+
+            // ============ URL Form ============
+            urlForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const url = videoUrlInput.value.trim();
+                if (!url) {
+                    showToast(translations[currentLang].invalid_url, 'error');
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/info`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!data.success) {
+                        showToast(data.error?.message || translations[currentLang].server_error, 'error');
+                        return;
+                    }
+                    
+                    currentVideoInfo = data.data;
+                    displayVideoPreview(currentVideoInfo);
+                    showToast('تم جلب معلومات الفيديو', 'success');
+                    
+                } catch (err) {
+                    showToast(translations[currentLang].server_error, 'error');
+                }
+            });
+
+            function displayVideoPreview(info) {
+                previewThumbnail.src = info.thumbnail || '';
+                previewTitle.textContent = info.title || 'Unknown';
+                previewDuration.textContent = formatDuration(info.duration);
+                previewSource.textContent = info.source || '';
+                
+                qualitySelector.innerHTML = '';
+                const qualities = info.qualities || ['360p', '480p'];
+                const uniqueQualities = [...new Set([...qualities, '360p', '480p'])].sort((a, b) => parseInt(a) - parseInt(b));
+                
+                uniqueQualities.forEach(quality => {
+                    const btn = document.createElement('button');
+                    btn.className = 'quality-btn';
+                    const isPlus = quality === '720p' || quality === '1080p';
+                    if (isPlus) btn.classList.add('plus-quality');
+                    
+                    btn.innerHTML = isPlus 
+                        ? `${quality} <span class="plus-badge">PLUS</span>`
+                        : quality;
+                    
+                    btn.addEventListener('click', () => selectQuality(quality, isPlus, btn));
+                    qualitySelector.appendChild(btn);
+                    
+                    if (!isPlus && !selectedQuality) {
+                        btn.classList.add('selected');
+                        selectedQuality = quality;
+                    }
+                });
+                
+                videoPreview.style.display = 'block';
+                videoPreview.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function selectQuality(quality, isPlus, btn) {
+                if (isPlus) {
+                    plusModalMessage.textContent = translations[currentLang].plus_message;
+                    plusModal.style.display = 'flex';
+                    return;
+                }
+                
+                selectedQuality = quality;
+                qualitySelector.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            }
+
+            function formatDuration(seconds) {
+                if (!seconds) return '';
+                const m = Math.floor(seconds / 60);
+                const s = seconds % 60;
+                return `${m}:${s.toString().padStart(2, '0')}`;
+            }
+
+            // ============ Download ============
+            downloadBtn.addEventListener('click', async () => {
+                if (!selectedQuality) {
+                    showToast(translations[currentLang].select_quality, 'error');
+                    return;
+                }
+                
+                const url = videoUrlInput.value.trim();
+                if (!url) return;
+                
+                progressSection.style.display = 'block';
+                videoPreview.style.display = 'none';
+                progressStatus.textContent = translations[currentLang].processing;
+                progressPercent.textContent = '0%';
+                progressRingFill.style.strokeDashoffset = '213.6';
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/download`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url, quality: selectedQuality })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!data.success) {
+                        if (data.error?.code === 'QUALITY_REQUIRES_PLUS') {
+                            plusModal.style.display = 'flex';
+                        } else {
+                            showToast(data.error?.message || 'Error', 'error');
+                        }
+                        progressSection.style.display = 'none';
+                        return;
+                    }
+                    
+                    if (data.data.download_url) {
+                        progressRingFill.style.strokeDashoffset = '0';
+                        progressPercent.textContent = '100%';
+                        progressStatus.textContent = translations[currentLang].completed;
+                        showToast(translations[currentLang].completed, 'success');
+                        
+                        setTimeout(() => {
+                            window.location.href = data.data.download_url;
+                            progressSection.style.display = 'none';
+                        }, 1000);
+                    }
+                    
+                } catch (err) {
+                    progressSection.style.display = 'none';
+                    showToast(translations[currentLang].server_error, 'error');
+                }
+            });
+
+            // ============ Modals ============
+            closeModalBtn.addEventListener('click', () => plusModal.style.display = 'none');
+            modalUpgradeBtn.addEventListener('click', () => {
+                plusModal.style.display = 'none';
+                showPage('pricingPage');
+                setTimeout(() => paymentModal.style.display = 'flex', 300);
+            });
+            
+            plusModal.addEventListener('click', (e) => {
+                if (e.target === plusModal) plusModal.style.display = 'none';
+            });
+
+            upgradeBtn.addEventListener('click', () => paymentModal.style.display = 'flex');
+            
+            paymentModal.addEventListener('click', (e) => {
+                if (e.target === paymentModal) paymentModal.style.display = 'none';
+            });
+
+            paymentMethods.querySelectorAll('.payment-method').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    paymentMethods.querySelectorAll('.payment-method').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedPaymentMethod = btn.dataset.method;
+                });
+            });
+
+            confirmPaymentBtn.addEventListener('click', () => {
+                paymentModal.style.display = 'none';
+                maintenanceModal.style.display = 'flex';
+            });
+
+            closeMaintenanceBtn.addEventListener('click', () => maintenanceModal.style.display = 'none');
+            maintenanceModal.addEventListener('click', (e) => {
+                if (e.target === maintenanceModal) maintenanceModal.style.display = 'none';
+            });
+
+            // ============ History ============
+            function getHistory() {
+                try { return JSON.parse(localStorage.getItem('flowtube_history') || '[]'); }
+                catch { return []; }
+            }
+
+            function saveToHistory(info, quality) {
+                const history = getHistory();
+                history.unshift({
+                    title: info.title || 'Unknown',
+                    thumbnail: info.thumbnail || '',
+                    quality,
+                    date: new Date().toISOString()
+                });
+                if (history.length > 50) history.length = 50;
+                localStorage.setItem('flowtube_history', JSON.stringify(history));
+            }
+
+            function renderHistory() {
+                const history = getHistory();
+                if (!history.length) {
+                    historyList.innerHTML = `<p style="text-align:center; padding:40px; color:var(--text-tertiary);">${translations[currentLang].no_history}</p>`;
+                    return;
+                }
+                historyList.innerHTML = history.map(item => `
+                    <div class="history-item">
+                        ${item.thumbnail ? `<img class="history-thumbnail" src="${item.thumbnail}" alt="${item.title}">` : ''}
+                        <div>
+                            <div class="history-title">${item.title}</div>
+                            <div class="history-meta">${item.quality} · ${new Date(item.date).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            clearHistoryBtn.addEventListener('click', () => {
+                localStorage.removeItem('flowtube_history');
+                renderHistory();
+                showToast(translations[currentLang].clear_history, 'success');
+            });
+
+            // ============ Init ============
+            const savedLang = localStorage.getItem('flowtube_lang') || 'ar';
+            setLanguage(savedLang);
+            renderHistory();
+            showPage('homePage');
+        })();
+    </script>
+</body>
+</html>
