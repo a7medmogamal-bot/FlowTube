@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowTube - حمل ببساطة</title>
+    <meta name="description" content="FlowTube - تحميل سريع ونظيف وبسيط للمحتوى الذي تملك حق تحميله">
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #f1f3f5;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+            --border-color: #e5e7eb;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #dbeafe;
+            --success: #16a34a;
+            --error: #dc2626;
+            --error-bg: #fef2f2;
+            --warning: #d97706;
+            --plus-color: #f59e0b;
+            --plus-light: #fef3c7;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --transition: 0.3s ease;
+            --font-family: 'Segoe UI', Tahoma, 'Noto Sans Arabic', Arial, sans-serif;
+            --max-width: 1200px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --bg-tertiary: #374151;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-tertiary: #9ca3af;
+            --border-color: #374151;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #1e3a5f;
+            --plus-color: #fbbf24;
+            --plus-light: #78350f;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --error-bg: #450a0a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color var(--transition), color var(--transition);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Header */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: background-color var(--transition), border-color var(--transition);
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            transition: background-color var(--transition);
+        }
+
+        .menu-toggle:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .nav-links a, .nav-links button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 14px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            white-space: nowrap;
+            font-family: var(--font-family);
+        }
+
+        .nav-links a:hover, .nav-links button:hover {
+            color: var(--text-primary);
+            background-color: var(--bg-tertiary);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+            background-color: var(--accent-light);
+            font-weight: 600;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 24px;
+            background-color: var(--border-color);
+            margin: 0 8px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        main {
+            flex: 1;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 40px 24px;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 0 40px;
+        }
+
+        .hero-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            object-fit: cover;
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .url-form {
+            display: flex;
+            gap: 12px;
+            max-width: 650px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .url-form input[type="url"] {
+            flex: 1;
+            min-width: 280px;
+            padding: 16px 20px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            outline: none;
+            transition: all var(--transition);
+            font-family: var(--font-family);
+            direction: ltr;
+            text-align: center;
+        }
+
+        .url-form input[type="url"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+            justify-content: center;
+            font-family: var(--font-family);
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        .btn-plus {
+            background-color: var(--plus-color);
+            color: #ffffff;
+        }
+
+        .btn-plus:hover {
+            background-color: #d97706;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .hero-small-text {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        .error-message {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background-color: var(--error-bg);
+            border: 1px solid var(--error);
+            border-radius: var(--radius-sm);
+            color: var(--error);
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s ease;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .success-message {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background-color: #f0fdf4;
+            border: 1px solid var(--success);
+            border-radius: var(--radius-sm);
+            color: var(--success);
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s ease;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features {
+            margin-top: 60px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            text-align: center;
+            transition: all var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .site-footer {
+            text-align: center;
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .footer-small {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+
+        /* Video Preview */
+        .video-preview {
+            margin-top: 32px;
+        }
+
+        .preview-card {
+            display: flex;
+            gap: 24px;
+            padding: 24px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            flex-wrap: wrap;
+        }
+
+        .preview-thumbnail {
+            width: 260px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+        }
+
+        .preview-details {
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .preview-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .preview-meta {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .separator {
+            margin: 0 8px;
+        }
+
+        .quality-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .quality-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-family);
+        }
+
+        .quality-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .quality-btn.selected {
+            border-color: var(--accent);
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .quality-btn.plus-quality {
+            border-color: var(--plus-color);
+            background-color: var(--plus-light);
+            color: var(--plus-color);
+        }
+
+        .quality-btn.plus-quality:hover {
+            border-color: #d97706;
+            color: #d97706;
+        }
+
+        .quality-btn.plus-quality.selected {
+            border-color: #d97706;
+            background-color: var(--plus-light);
+            color: #d97706;
+        }
+
+        .plus-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: var(--plus-color);
+            color: #ffffff;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .lock-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .download-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 16px;
+            font-size: 1.1rem;
+        }
+
+        /* Progress */
+        .progress-section {
+            margin-top: 24px;
+            padding: 20px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+        }
+
+        .progress-status {
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: var(--bg-tertiary);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-percent {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            animation: fadeIn 0.2s ease;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Payment Modal */
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-weight: 600;
+            justify-content: center;
+            font-family: var(--font-family);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .payment-method:hover {
+            border-color: var(--accent);
+        }
+
+        .payment-method.selected {
+            border-color: var(--accent);
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: all var(--transition);
+            font-family: var(--font-family);
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                right: 0;
+                left: 0;
+                flex-direction: column;
+                background-color: var(--bg-primary);
+                border-bottom: 1px solid var(--border-color);
+                padding: 16px;
+                gap: 4px;
+                box-shadow: var(--shadow-md);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-links a, .nav-links button {
+                padding: 14px;
+                font-size: 1rem;
+                justify-content: flex-start;
+            }
+
+            .nav-divider {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.2rem;
+            }
+
+            .url-form {
+                flex-direction: column;
+            }
+
+            .url-form input[type="url"] {
+                min-width: 100%;
+            }
+
+            .preview-card {
+                flex-direction: column;
+            }
+
+            .preview-thumbnail {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            main {
+                padding: 24px 16px;
+            }
+
+            .quality-btn {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header" role="banner">
+        <nav class="nav-container" role="navigation" aria-label="التنقل الرئيسي">
+            <a href="#" class="logo" aria-label="FlowTube">
+                <img src="https://i.ibb.co/9kDGvHxH/flowtube-logo.png" alt="FlowTube Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span class="logo-text">FlowTube</span>
+            </a>
+            <button class="menu-toggle" aria-label="فتح القائمة" aria-expanded="false" id="menuToggle">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" y1="7" x2="20" y2="7"></line>
+                    <line x1="4" y1="12" x2="20" y2="12"></line>
+                    <line x1="4" y1="17" x2="20" y2="17"></line>
+                </svg>
+            </button>
+            <ul class="nav-links" role="menubar" id="navLinks">
+                <li role="none"><a href="#" role="menuitem" class="active" aria-current="page" data-page="home">الرئيسية</a></li>
+                <li role="none"><a href="#" role="menuitem" data-page="pricing">الباقات</a></li>
+                <li role="none"><a href="#" role="menuitem" data-page="history">السجل</a></li>
+                <li role="none"><a href="#" role="menuitem" data-page="settings">الإعدادات</a></li>
+                <li role="none"><a href="#" role="menuitem" data-page="about">من نحن</a></li>
+                <li role="none" class="nav-divider"></li>
+                <li role="none">
+                    <button class="theme-toggle-btn" id="themeToggle" aria-label="تغيير المظهر">
+                        <svg class="icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
+                </li>
+                <li role="none">
+                    <a href="#" role="menuitem" data-page="settings">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main role="main" id="mainContent">
+        <!-- الصفحة الرئيسية -->
+        <section class="hero" aria-label="FlowTube" id="homePage">
+            <img src="https://i.ibb.co/9kDGvHxH/flowtube-logo.png" alt="FlowTube Logo" class="hero-logo" onerror="this.style.display='none';">
+            <h1 class="hero-title">FlowTube</h1>
+            <p class="hero-tagline">حمل ببساطة.</p>
+            <p class="hero-description">سريع، نظيف، وبدون تعقيد.</p>
+            <form class="url-form" id="urlForm" aria-label="نموذج رابط الفيديو">
+                <label for="videoUrl" class="sr-only">الصق رابط الفيديو</label>
+                <input type="url" id="videoUrl" placeholder="الصق رابط الفيديو هنا" required autocomplete="url" aria-describedby="urlHelp">
+                <button type="submit" class="btn btn-primary" id="getVideoBtn">
+                    جلب الفيديو
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </form>
+            <p class="hero-small-text" id="urlHelp">فقط قم بتحميل المحتوى الذي تملك حق تحميله.</p>
+            <div id="errorMessage" class="error-message" role="alert" style="display:none;"></div>
+            <div id="successMessage" class="success-message" role="status" style="display:none;"></div>
+        </section>
+
+        <!-- معاينة الفيديو -->
+        <section id="videoPreview" class="video-preview" style="display:none;">
+            <article class="preview-card">
+                <img class="preview-thumbnail" id="previewThumbnail" src="" alt="صورة الفيديو" loading="lazy">
+                <div class="preview-details">
+                    <h2 class="preview-title" id="previewTitle"></h2>
+                    <p class="preview-meta">
+                        <span id="previewDuration"></span>
+                        <span class="separator">·</span>
+                        <span id="previewSource"></span>
+                    </p>
+                    <p style="font-weight:600; margin-bottom:10px;">اختر الجودة:</p>
+                    <div class="quality-selector" role="group" aria-label="اختيار الجودة" id="qualitySelector">
+                        <!-- الجودات هتتضاف هنا ديناميكياً -->
+                    </div>
+                    <button class="btn btn-primary download-btn" id="downloadBtn">
+                        تحميل الآن
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                </div>
+            </article>
+        </section>
+
+        <!-- التقدم -->
+        <section id="progressSection" class="progress-section" style="display:none;">
+            <div class="progress-status" id="progressStatus">جاري المعالجة...</div>
+            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-percent" id="progressPercent">0%</div>
+        </section>
+
+        <!-- المميزات -->
+        <section class="features" aria-label="المميزات" id="featuresSection">
+            <div class="feature-grid">
+                <article class="feature-card">
+                    <h3>بسيط</h3>
+                    <p>الصق الرابط واحصل على المحتوى فوراً.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>سريع</h3>
+                    <p>معالجة محسنة لتحميل أسرع.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>نظيف</h3>
+                    <p>بدون إعلانات، بدون تتبع، بدون فوضى.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- صفحة الباقات -->
+        <section id="pricingPage" style="display:none;">
+            <h1 class="page-title">الباقات</h1>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:32px; max-width:800px; margin:0 auto;">
+                <article style="background-color:var(--bg-secondary); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:32px; text-align:center;">
+                    <h2 style="font-size:1.3rem; font-weight:700; margin-bottom:8px;">مجاني</h2>
+                    <p style="font-size:2.5rem; font-weight:800; margin-bottom:24px; color:var(--accent);">0 جنيه</p>
+                    <ul style="list-style:none; margin-bottom:24px; text-align:right;">
+                        <li style="display:flex; align-items:center; gap:8px; padding:8px 0; color:var(--text-secondary);">
+                            <svg class="icon" style="color:var(--success); width:18px; height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            جودة 360p
+                        </li>
+                        <li style="display:flex; align-items:center; gap:8px; padding:8px 0; color:var(--text-secondary);">
+                            <svg class="icon" style="color:var(--success); width:18px; height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            جودة 480p
+                        </li>
+                        <li style="display:flex; align-items:center; gap:8px; padding:8px 0; color:var(--text-secondary);">
+                            <svg class="icon" style="color:var(--success); width:18px; height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            السجل
+                        </li>
+                        <li style="display:flex; align-items:center; gap:8px; padding:8px 0; color:var(--text-secondary);">
+                            <svg class="icon" style="color:var(--success); width:18px; height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            المظهر الداكن والفاتح
+                        </li>
+                    </ul>
+                    <button class="btn btn-secondary" disabled>خطتك الحالية</button>
+                </article>
+                <article style="background-color:var(--bg-secondary); border:2px solid var(--plus-color); border-radius:var(--radius-lg); padding:32px; text-align:center; box-shadow:var(--shadow-md);">
+                    <h2 style="font-size:1.3rem; font-weight:700; margin-bottom:8px; color:var(--plus-color);">PLUS</h2>
+                    <p style="font-size:2.5rem; font-weight:800; margin-bottom:24px; color:var(--plus-color);">49 جنيه/شهر</p>
+                    <ul style="list-style:none; margin-bottom:24px; text-align:right;">
+                        <li style="display:flex; align-items:center; gap:8px; padding:8px 0; color:var(--text-secondary);">
+                            <svg class="icon" style="color:var(--success); width:18px; height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            جودة 720p
+                        </li>
+                        <li style="display:flex; align-items:center; gap:8px; padding:8px 0; color:var(--text-secondary);">
+                            <svg class="icon" style="color:var(--success); width:18px; height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            جودة 1080p
+                        </li>
+                        <li style="display:flex; align-items:center; gap:8px; padding:8px 0; color:var(--text-secondary);">
+                            <svg class="icon" style="color:var(--success); width:18px; height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            أولوية أعلى
+                        </li>
+                        <li style="display:flex; align-items:center; gap:8px; padding:8px 0; color:var(--text-secondary);">
+                            <svg class="icon" style="color:var(--success); width:18px; height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            كل مميزات المجاني
+                        </li>
+                    </ul>
+                    <button class="btn btn-plus" id="upgradeBtn">الترقية إلى Plus</button>
+                </article>
+            </div>
+        </section>
+
+        <!-- صفحة السجل -->
+        <section id="historyPage" style="display:none;">
+            <h1 class="page-title">سجل التحميلات</h1>
+            <div style="text-align:center; margin-bottom:24px;">
+                <button class="btn btn-secondary" id="clearHistoryBtn">
+                    مسح السجل
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="historyList" style="display:flex; flex-direction:column; gap:16px;">
+                <p class="empty-state" id="emptyHistory" style="text-align:center; padding:60px 20px; color:var(--text-tertiary);">لا توجد تحميلات بعد.</p>
+            </div>
+        </section>
+
+        <!-- صفحة الإعدادات -->
+        <section id="settingsPage" style="display:none;">
+            <h1 class="page-title">الإعدادات</h1>
+            <div style="max-width:600px; margin:0 auto;">
+                <div style="margin-bottom:32px;">
+                    <h2 style="font-size:1.1rem; font-weight:700; margin-bottom:16px; color:var(--text-secondary);">المظهر</h2>
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border-color);">
+                        <label for="themeSelect" style="font-weight:600;">السمة</label>
+                        <select id="themeSelect" style="padding:8px 12px; border:1px solid var(--border-color); border-radius:var(--radius-sm); background-color:var(--bg-secondary); color:var(--text-primary); font-family:var(--font-family);">
+                            <option value="system">النظام</option>
+                            <option value="light">فاتح</option>
+                            <option value="dark">داكن</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-bottom:32px;">
+                    <h2 style="font-size:1.1rem; font-weight:700; margin-bottom:16px; color:var(--text-secondary);">الخصوصية</h2>
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border-color);">
+                        <button class="btn btn-secondary" id="settingsClearHistoryBtn">مسح السجل</button>
+                    </div>
+                </div>
+                <div style="margin-bottom:32px;">
+                    <h2 style="font-size:1.1rem; font-weight:700; margin-bottom:16px; color:var(--text-secondary);">الحساب</h2>
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border-color);">
+                        <label style="font-weight:600;">الخطة الحالية</label>
+                        <span id="currentPlan" style="font-weight:700; color:var(--accent);">مجاني</span>
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border-color);">
+                        <label style="font-weight:600;">حالة الاشتراك</label>
+                        <span id="subscriptionStatus" style="font-weight:700; color:var(--success);">نشط</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- صفحة من نحن -->
+        <section id="aboutPage" style="display:none;">
+            <h1 class="page-title">من نحن</h1>
+            <div style="max-width:600px; margin:0 auto; text-align:center;">
+                <img src="https://i.ibb.co/9kDGvHxH/flowtube-logo.png" alt="FlowTube Logo" style="width:100px; height:100px; border-radius:25px; margin-bottom:24px;" onerror="this.style.display='none';">
+                <p style="margin-bottom:16px; color:var(--text-secondary); font-size:1.1rem;">
+                    FlowTube هي أداة بسيطة تساعدك على تحميل المحتوى الذي تملك حق تحميله.
+                </p>
+                <p style="margin-bottom:16px; color:var(--text-secondary); font-size:1.1rem;">
+                    نحن نحترم صناع المحتوى وقوانين حقوق النشر. FlowTube يعمل فقط مع المحتوى المتاح مجاناً أو الذي تملك إذناً صريحاً بتحميله.
+                </p>
+                <p style="color:var(--text-secondary); font-size:1.2rem; font-weight:700;">
+                    حمل ببساطة.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- نافذة Plus -->
+    <div id="plusModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="plusModalTitle" style="display:none;">
+        <div class="modal-content">
+            <h2 id="plusModalTitle">ميزة Plus</h2>
+            <p id="plusModalMessage">هذه الجودة متاحة فقط لمشتركي Plus. قم بالترقية للوصول إلى جودات أعلى.</p>
+            <div class="modal-actions">
+                <button class="btn btn-plus" id="modalUpgradeBtn">الترقية إلى Plus</button>
+                <button class="btn btn-secondary" id="closeModalBtn">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الدفع -->
+    <div id="paymentModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle" style="display:none;">
+        <div class="modal-content">
+            <h2 id="paymentModalTitle">الترقية إلى Plus</h2>
+            <p>اختر طريقة الدفع المناسبة لك</p>
+            <form class="payment-form" id="paymentForm">
+                <div class="payment-methods" id="paymentMethods">
+                    <button type="button" class="payment-method selected" data-method="vodafone">فودافون كاش</button>
+                    <button type="button" class="payment-method" data-method="orange">أورانج كاش</button>
+                    <button type="button" class="payment-method" data-method="etisalat">اتصالات كاش</button>
+                    <button type="button" class="payment-method" data-method="we">وي كاش</button>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">رقم المحفظة</label>
+                    <input type="tel" id="phoneNumber" placeholder="01xxxxxxxxx" required pattern="01[0-9]{9}">
+                </div>
+                <div class="form-group">
+                    <label for="fullName">الاسم بالكامل</label>
+                    <input type="text" id="fullName" placeholder="أدخل اسمك" required>
+                </div>
+                <button type="submit" class="btn btn-plus" style="width:100%;">تأكيد الدفع</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة الصيانة -->
+    <div id="maintenanceModal" class="modal" role="dialog" aria-modal="true" style="display:none;">
+        <div class="modal-content">
+            <h2 style="color:var(--warning);">تحت الصيانة</h2>
+            <p>نظام الدفع تحت الصيانة حالياً. سنقوم بإبلاغك في أقرب وقت.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeMaintenanceBtn">حسناً</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer" role="contentinfo">
+        <p>&copy; 2024 FlowTube. حمل ببساطة.</p>
+        <p class="footer-small">فقط قم بتحميل المحتوى الذي تملك حق تحميله.</p>
+    </footer>
+
+    <script>
+        (function() {
+            // ============ إدارة المظهر ============
+            const themeToggle = document.getElementById('themeToggle');
+            const moonIcon = themeToggle.querySelector('.moon-icon');
+            const sunIcon = themeToggle.querySelector('.sun-icon');
+            const themeSelect = document.getElementById('themeSelect');
+            
+            function getTheme() {
+                return localStorage.getItem('flowtube_theme') || 'system';
+            }
+            
+            function applyTheme(theme) {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const isDark = theme === 'dark' || (theme === 'system' && prefersDark);
+                
+                if (isDark) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    moonIcon.style.display = 'none';
+                    sunIcon.style.display = 'block';
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                    moonIcon.style.display = 'block';
+                    sunIcon.style.display = 'none';
+                }
+                
+                if (themeSelect) themeSelect.value = theme;
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                const current = getTheme();
+                const next = current === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('flowtube_theme', next);
+                applyTheme(next);
+            });
+            
+            if (themeSelect) {
+                themeSelect.addEventListener('change', function() {
+                    localStorage.setItem('flowtube_theme', this.value);
+                    applyTheme(this.value);
+                });
+            }
+            
+            // ============ القائمة المتنقلة ============
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            menuToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+            
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('open');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+            
+            // ============ التنقل بين الصفحات ============
+            const pages = {
+                home: document.getElementById('homePage'),
+                pricing: document.getElementById('pricingPage'),
+                history: document.getElementById('historyPage'),
+                settings: document.getElementById('settingsPage'),
+                about: document.getElementById('aboutPage')
+            };
+            
+            const featuresSection = document.getElementById('featuresSection');
+            const videoPreview = document.getElementById('videoPreview');
+            const progressSection = document.getElementById('progressSection');
+            
+            function showPage(pageName) {
+                Object.keys(pages).forEach(key => {
+                    if (pages[key]) pages[key].style.display = key === pageName ? 'block' : 'none';
+                });
+                
+                if (pageName === 'home') {
+                    featuresSection.style.display = 'block';
+                } else {
+                    featuresSection.style.display = 'none';
+                    videoPreview.style.display = 'none';
+                    progressSection.style.display = 'none';
+                }
+                
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.page === pageName) {
+                        link.classList.add('active');
+                        link.setAttribute('aria-current', 'page');
+                    } else {
+                        link.removeAttribute('aria-current');
+                    }
+                });
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            navLinks.querySelectorAll('a[data-page]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showPage(this.dataset.page);
+                });
+            });
+            
+            // ============ عناصر الواجهة ============
+            const urlForm = document.getElementById('urlForm');
+            const videoUrlInput = document.getElementById('videoUrl');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            const getVideoBtn = document.getElementById('getVideoBtn');
+            
+            const previewThumbnail = document.getElementById('previewThumbnail');
+            const previewTitle = document.getElementById('previewTitle');
+            const previewDuration = document.getElementById('previewDuration');
+            const previewSource = document.getElementById('previewSource');
+            const qualitySelector = document.getElementById('qualitySelector');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            const progressStatus = document.getElementById('progressStatus');
+            const progressFill = document.getElementById('progressFill');
+            const progressPercent = document.getElementById('progressPercent');
+            
+            const plusModal = document.getElementById('plusModal');
+            const plusModalMessage = document.getElementById('plusModalMessage');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modalUpgradeBtn = document.getElementById('modalUpgradeBtn');
+            
+            const paymentModal = document.getElementById('paymentModal');
+            const paymentForm = document.getElementById('paymentForm');
+            const paymentMethods = document.getElementById('paymentMethods');
+            const maintenanceModal = document.getElementById('maintenanceModal');
+            const closeMaintenanceBtn = document.getElementById('closeMaintenanceBtn');
+            
+            // ============ الحالة ============
+            let currentVideoInfo = null;
+            let selectedQuality = null;
+            let currentJobId = null;
+            let progressPollInterval = null;
+            let selectedPaymentMethod = 'vodafone';
+            
+            const API_BASE_URL = 'http://localhost:8000/api';
+            
+            const errorMessages = {
+                'INVALID_URL': 'الرجاء إدخال رابط صحيح.',
+                'UNSUPPORTED_SOURCE': 'هذا المصدر غير مدعوم.',
+                'CONTENT_UNAVAILABLE': 'هذا المحتوى غير متاح للتحميل.',
+                'QUALITY_NOT_AVAILABLE': 'هذه الجودة غير متاحة لهذا المحتوى.',
+                'QUALITY_REQUIRES_PLUS': 'هذه الجودة تتطلب اشتراك Plus.',
+                'RATE_LIMITED': 'أنت تتجاوز الحد المسموح. حاول مرة أخرى لاحقاً.',
+                'FILE_TOO_LARGE': 'الملف كبير جداً للتحميل.',
+                'JOB_EXPIRED': 'انتهت صلاحية مهمة التحميل.',
+                'PROCESSING_FAILED': 'فشلت المعالجة. حاول مرة أخرى.',
+                'SERVER_BUSY': 'الخادم مشغول حالياً. حاول مرة أخرى لاحقاً.'
+            };
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                setTimeout(() => { errorMessage.style.display = 'none'; }, 5000);
+            }
+            
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                setTimeout(() => { successMessage.style.display = 'none'; }, 5000);
+            }
+            
+            function formatDuration(seconds) {
+                if (!seconds) return 'المدة غير معروفة';
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                if (hours > 0) {
+                    return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                }
+                return `${minutes}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            function getPlan() {
+                return localStorage.getItem('flowtube_plan') || 'free';
+            }
+            
+            function setPlan(plan) {
+                localStorage.setItem('flowtube_plan', plan);
+                updatePlanUI();
+            }
+            
+            function updatePlanUI() {
+                const plan = getPlan();
+                const currentPlan = document.getElementById('currentPlan');
+                const subscriptionStatus = document.getElementById('subscriptionStatus');
+                
+                if (currentPlan) currentPlan.textContent = plan === 'plus' ? 'Plus' : 'مجاني';
+                if (subscriptionStatus) subscriptionStatus.textContent = plan === 'plus' ? 'نشط' : 'مجاني';
+            }
+            
+            // ============ اختيار طريقة الدفع ============
+            paymentMethods.querySelectorAll('.payment-method').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    paymentMethods.querySelectorAll('.payment-method').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedPaymentMethod = this.dataset.method;
+                });
+            });
+            
+            // ============ نموذج الدفع ============
+            paymentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                paymentModal.style.display = 'none';
+                maintenanceModal.style.display = 'flex';
+            });
+            
+            closeMaintenanceBtn.addEventListener('click', function() {
+                maintenanceModal.style.display = 'none';
+            });
+            
+            maintenanceModal.addEventListener('click', function(e) {
+                if (e.target === maintenanceModal) maintenanceModal.style.display = 'none';
+            });
+            
+            // ============ الترقية ============
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            if (upgradeBtn) {
+                upgradeBtn.addEventListener('click', function() {
+                    paymentModal.style.display = 'flex';
+                });
+            }
+            
+            modalUpgradeBtn.addEventListener('click', function() {
+                plusModal.style.display = 'none';
+                showPage('pricing');
+                setTimeout(() => {
+                    paymentModal.style.display = 'flex';
+                }, 300);
+            });
+            
+            closeModalBtn.addEventListener('click', function() {
+                plusModal.style.display = 'none';
+            });
+            
+            plusModal.addEventListener('click', function(e) {
+                if (e.target === plusModal) plusModal.style.display = 'none';
+            });
+            
+            // ============ جلب الفيديو ============
+            urlForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const url = videoUrlInput.value.trim();
+                if (!url) {
+                    showError('الرجاء إدخال رابط.');
+                    return;
+                }
+                
+                try {
+                    const parsedUrl = new URL(url);
+                    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+                        showError('الرجاء إدخال رابط HTTP أو HTTPS صحيح.');
+                        return;
+                    }
+                } catch (err) {
+                    showError('الرجاء إدخال رابط صحيح.');
+                    return;
+                }
+                
+                getVideoBtn.disabled = true;
+                getVideoBtn.innerHTML = '<span class="loading-spinner"></span> جاري التحميل...';
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/info`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url: url })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok || !data.success) {
+                        const code = data.error?.code || 'PROCESSING_FAILED';
+                        showError(data.error?.message || errorMessages[code] || 'حدث خطأ.');
+                        return;
+                    }
+                    
+                    currentVideoInfo = data.data;
+                    displayVideoPreview(currentVideoInfo);
+                    showSuccess('تم جلب معلومات الفيديو بنجاح.');
+                    
+                } catch (err) {
+                    showError('لا يمكن الاتصال بالخادم. تأكد من تشغيل الباك اند.');
+                } finally {
+                    getVideoBtn.disabled = false;
+                    getVideoBtn.innerHTML = 'جلب الفيديو <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+                }
+            });
+            
+            function displayVideoPreview(info) {
+                previewThumbnail.src = info.thumbnail || '';
+                previewThumbnail.alt = info.title || 'صورة الفيديو';
+                previewTitle.textContent = info.title || 'عنوان غير معروف';
+                previewDuration.textContent = 'المدة: ' + formatDuration(info.duration);
+                previewSource.textContent = 'المصدر: ' + (info.source || 'غير معروف');
+                
+                // بناء أزرار الجودة
+                qualitySelector.innerHTML = '';
+                const qualities = info.qualities || [];
+                
+                // تأكد من وجود الجودات الأساسية
+                const allQualities = [];
+                if (qualities.includes('360p') || !qualities.length) allQualities.push('360p');
+                if (qualities.includes('480p')) allQualities.push('480p');
+                if (qualities.includes('720p')) allQualities.push('720p');
+                if (qualities.includes('1080p')) allQualities.push('1080p');
+                
+                // لو مفيش جودات متاحة، اعرض الافتراضية
+                if (!allQualities.length) {
+                    allQualities.push('360p', '480p');
+                }
+                
+                const plan = getPlan();
+                
+                allQualities.forEach(quality => {
+                    const isPlusQuality = (quality === '720p' || quality === '1080p');
+                    const btn = document.createElement('button');
+                    btn.className = 'quality-btn';
+                    if (isPlusQuality) {
+                        btn.classList.add('plus-quality');
+                    }
+                    btn.dataset.quality = quality;
+                    
+                    if (isPlusQuality) {
+                        btn.innerHTML = `
+                            ${quality}
+                            <svg class="icon lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <span class="plus-badge">PLUS</span>
+                        `;
+                    } else {
+                        btn.textContent = quality;
+                    }
+                    
+                    btn.addEventListener('click', function() {
+                        handleQualitySelect(quality, isPlusQuality);
+                    });
+                    
+                    qualitySelector.appendChild(btn);
+                });
+                
+                // اختيار أول جودة متاحة افتراضياً
+                const firstFreeQuality = allQualities.find(q => q === '360p' || q === '480p');
+                if (firstFreeQuality) {
+                    selectedQuality = firstFreeQuality;
+                    const firstBtn = qualitySelector.querySelector(`[data-quality="${firstFreeQuality}"]`);
+                    if (firstBtn) firstBtn.classList.add('selected');
+                }
+                
+                videoPreview.style.display = 'block';
+                featuresSection.style.display = 'none';
+                videoPreview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            function handleQualitySelect(quality, isPlusQuality) {
+                const plan = getPlan();
+                
+                if (isPlusQuality && plan !== 'plus') {
+                    plusModalMessage.textContent = `جودة ${quality} متاحة فقط لمشتركي Plus. قم بالترقية للوصول إلى جودات أعلى.`;
+                    plusModal.style.display = 'flex';
+                    return;
+                }
+                
+                selectedQuality = quality;
+                qualitySelector.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('selected'));
+                const selectedBtn = qualitySelector.querySelector(`[data-quality="${quality}"]`);
+                if (selectedBtn) selectedBtn.classList.add('selected');
+            }
+            
+            // ============ التحميل ============
+            downloadBtn.addEventListener('click', async function() {
+                if (!currentVideoInfo) {
+                    showError('الرجاء جلب الفيديو أولاً.');
+                    return;
+                }
+                
+                if (!selectedQuality) {
+                    showError('الرجاء اختيار الجودة.');
+                    return;
+                }
+                
+                const url = videoUrlInput.value.trim();
+                if (!url) {
+                    showError('الرجاء إدخال رابط.');
+                    return;
+                }
+                
+                progressSection.style.display = 'block';
+                progressStatus.textContent = 'جاري بدء التحميل...';
+                progressFill.style.width = '0%';
+                progressPercent.textContent = '0%';
+                
+                downloadBtn.disabled = true;
+                downloadBtn.textContent = 'جاري التحميل...';
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/download`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            url: url,
+                            quality: selectedQuality
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok || !data.success) {
+                        const code = data.error?.code || 'PROCESSING_FAILED';
+                        
+                        if (code === 'QUALITY_REQUIRES_PLUS') {
+                            plusModalMessage.textContent = `جودة ${selectedQuality} متاحة فقط لمشتركي Plus.`;
+                            plusModal.style.display = 'flex';
+                            progressSection.style.display = 'none';
+                        } else {
+                            showError(data.error?.message || errorMessages[code] || 'حدث خطأ.');
+                            progressSection.style.display = 'none';
+                        }
+                        
+                        downloadBtn.disabled = false;
+                        downloadBtn.textContent = 'تحميل الآن';
+                        return;
+                    }
+                    
+                    currentJobId = data.data.job_id;
+                    startProgressPolling();
+                    saveToHistory(currentVideoInfo, selectedQuality);
+                    
+                } catch (err) {
+                    showError('لا يمكن الاتصال بالخادم.');
+                    progressSection.style.display = 'none';
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = 'تحميل الآن';
+                }
+            });
+            
+            function startProgressPolling() {
+                if (progressPollInterval) clearInterval(progressPollInterval);
+                
+                progressPollInterval = setInterval(async () => {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/progress/${currentJobId}`);
+                        const data = await response.json();
+                        
+                        if (!response.ok || !data.success) {
+                            clearInterval(progressPollInterval);
+                            showError('فشل في الحصول على التقدم.');
+                            resetDownloadButton();
+                            return;
+                        }
+                        
+                        const progress = data.data;
+                        const statusTexts = {
+                            'queued': 'في الانتظار...',
+                            'processing': 'جاري المعالجة...',
+                            'downloading': 'جاري التحميل...',
+                            'converting': 'جاري التحويل...',
+                            'completed': 'اكتمل التحميل!',
+                            'failed': 'فشل التحميل.',
+                            'cancelled': 'تم الإلغاء.',
+                            'expired': 'انتهت الصلاحية.'
+                        };
+                        
+                        progressStatus.textContent = statusTexts[progress.status] || progress.status;
+                        
+                        if (progress.progress !== null && progress.progress !== undefined) {
+                            progressFill.style.width = `${progress.progress}%`;
+                            progressPercent.textContent = `${progress.progress}%`;
+                        }
+                        
+                        if (progress.status === 'completed') {
+                            clearInterval(progressPollInterval);
+                            progressFill.style.width = '100%';
+                            progressPercent.textContent = '100%';
+                            showSuccess('تم التحميل بنجاح!');
+                            resetDownloadButton();
+                            
+                            // تحميل مباشر في المتصفح
+                            if (progress.download_url) {
+                                const fullUrl = `http://localhost:8000${progress.download_url}`;
+                                window.location.href = fullUrl;
+                            }
+                        } else if (['failed', 'cancelled', 'expired'].includes(progress.status)) {
+                            clearInterval(progressPollInterval);
+                            showError(`التحميل ${statusTexts[progress.status]}`);
+                            resetDownloadButton();
+                        }
+                        
+                    } catch (err) {
+                        clearInterval(progressPollInterval);
+                        showError('خطأ في الاتصال أثناء فحص التقدم.');
+                        resetDownloadButton();
+                    }
+                }, 1000);
+            }
+            
+            function resetDownloadButton() {
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = 'تحميل الآن <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>';
+            }
+            
+            // ============ السجل ============
+            function getHistory() {
+                try {
+                    return JSON.parse(localStorage.getItem('flowtube_history') || '[]');
+                } catch (err) {
+                    return [];
+                }
+            }
+            
+            function saveToHistory(info, quality) {
+                const history = getHistory();
+                history.unshift({
+                    title: info.title || 'عنوان غير معروف',
+                    thumbnail: info.thumbnail || '',
+                    quality: quality,
+                    date: new Date().toISOString()
+                });
+                
+                if (history.length > 50) history.length = 50;
+                localStorage.setItem('flowtube_history', JSON.stringify(history));
+                renderHistory();
+            }
+            
+            function renderHistory() {
+                const historyList = document.getElementById('historyList');
+                const history = getHistory();
+                
+                if (!historyList) return;
+                
+                if (history.length === 0) {
+                    historyList.innerHTML = '<p style="text-align:center; padding:60px 20px; color:var(--text-tertiary);">لا توجد تحميلات بعد.</p>';
+                    return;
+                }
+                
+                historyList.innerHTML = history.map(item => `
+                    <div style="display:flex; align-items:center; gap:16px; padding:16px; background-color:var(--bg-secondary); border:1px solid var(--border-color); border-radius:var(--radius-md);">
+                        ${item.thumbnail ? `<img src="${item.thumbnail}" alt="${item.title}" style="width:80px; height:60px; object-fit:cover; border-radius:var(--radius-sm);" loading="lazy">` : ''}
+                        <div style="flex:1; min-width:0;">
+                            <div style="font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.title}</div>
+                            <div style="font-size:0.85rem; color:var(--text-secondary);">${item.quality} · ${new Date(item.date).toLocaleString('ar-EG')}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            function clearHistory() {
+                localStorage.removeItem('flowtube_history');
+                renderHistory();
+                showSuccess('تم مسح السجل.');
+            }
+            
+            document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
+            document.getElementById('settingsClearHistoryBtn').addEventListener('click', clearHistory);
+            
+            // ============ التهيئة ============
+            applyTheme(getTheme());
+            renderHistory();
+            updatePlanUI();
+        })();
+    </script>
+</body>
+</html>
